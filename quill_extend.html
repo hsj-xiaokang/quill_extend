@@ -116,11 +116,13 @@
                 Quill.register(SizeStyle, true);
                 
                 //初始化
+                window.editor_insertNum = 10000000000000;//10000000000000 = 1兆亿保证永远插在最后面
                 var editor = window.editor_quill = new Quill('#editor', {
                   modules: { toolbar: '#toolbar' },
                   placeholder: '请编辑内容（图片限制20M，视频200M）...',
                   theme: 'snow'
                 });
+                
                 /**
                  * 下面内容参考
                  * blog知乎：https://www.zhihu.com/question/63589376/answer/211207526
@@ -128,23 +130,22 @@
                 //禁止调试
                 Quill.debug(false);
                 //自定义的事件
-                (editor?editor:window.editor_quill).on("text-change",function(delta,oldDelta,source){
+                (editor||window.editor_quill).on("text-change",function(delta,oldDelta,source){
                 	if('user' === source){
                 		//打印当前的内容
-                  		console.log((editor?editor:window.editor_quill).container.firstChild.innerHTML);
+                  		console.log((editor||window.editor_quill).container.firstChild.innerHTML);
                 	}
                 });
                 //图片
-               var toolbar =  (editor?editor:window.editor_quill).getModule('toolbar');
+               var toolbar =  (editor||window.editor_quill).getModule('toolbar');
                toolbar.addHandler("image",function(e){
-               	   //console.log("自定义的事件-图片");
-               	   //10000000000000 = 1兆亿保证永远插在最后面
-               	   (editor?editor:window.editor_quill).insertEmbed(10000000000000,'image',"http://139.198.13.100:7010/resource/M00/00/43/wKgAA1oKik6ASojMAAAB9enLL80510.png");
+               	   //console.log("自定义的事件-图片");               	   
+               	   (editor||window.editor_quill).insertEmbed((window.editor_insertNum||10000000000000),'image',"http://139.198.13.100:7010/resource/M00/00/43/wKgAA1oKik6ASojMAAAB9enLL80510.png");
                });
                //视频 http://www.w3school.com.cn/i/movie.ogg
                toolbar.addHandler("video",function(e){
                	   //10000000000000 = 1兆亿保证永远插在最后面
-               	   (editor?editor:window.editor_quill).insertEmbed(10000000000000,'video',"http://www.w3school.com.cn/i/movie.ogg");
+               	   (editor||window.editor_quill).insertEmbed((window.editor_insertNum||10000000000000),'video',"http://www.w3school.com.cn/i/movie.ogg");
                });
             }
         </script>
