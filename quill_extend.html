@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>文本编辑器_用在h5开发的手机上面修改图片选择方式，插入上传成功的URL地址，不是base64，base64会很大的请求</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+        <link href="quill.snow.css" rel="stylesheet">
+        <script src="quill.js"></script>
+        
+        
+        <style>
+            /*编辑器样式修改*/
+            .ql-snow .ql-picker.ql-size .ql-picker-label::before {
+              content: '中字体';
+            }
+            .ql-toolbar.ql-snow .ql-formats {
+              margin-right: 8px;
+            }
+            
+            #editor{min-height:300px;}
+        </style>
+    </head>
+    <body>
+        <!-- 创建工具栏组件 -->
+        <div id="toolbar">
+            <span class="ql-formats">
+              <button class="ql-bold">Bold</button><!--控制粗细-->
+              <button class="ql-italic">Italic</button>    <!--控制切斜-->
+              <button class="ql-underline">下划线</button>    <!--下划线-->
+              <button class="ql-link">link</button>    <!--链接-->
+          </span>
+          <span class="ql-formats">
+                  <select class="ql-header">
+                    <option value="1">标题</option>
+                    <option value="2">子标题</option>
+                    <option selected>普通文本</option>
+                  </select>
+          </span>
+          <span class="ql-formats">
+                  <button class="ql-list" value="ordered"></button>
+                  <button class="ql-list" value="bullet"></button>
+                  <select class="ql-align">
+                    <option selected></option>
+                    <option value="center"></option>
+                    <option value="right"></option>
+                    <option value="justify"></option>
+                  </select>
+          </span>
+          <span class="ql-formats">
+              <button class="ql-code-block"></button>    <!--代码-->
+              <button class="ql-image" value="bullet"></button>    <!--图片-->
+              <button class="ql-video"></button>
+          </span>
+          <span class="ql-formats">
+            <select class="ql-color">
+              <option selected></option>
+              <option value="red"></option>
+              <option value="orange"></option>
+              <option value="yellow"></option>
+              <option value="green"></option>
+              <option value="blue"></option>
+              <option value="purple"></option>
+              
+              <!--<option value="gray"></option>
+              <option value="AntiqueWhite"></option>
+              <option value="Aqua"></option>
+              <option value="BlueViolet"></option>
+              <option value="Chartreuse"></option>
+              <option value="DarkGray"></option>
+              <option value="LawnGreen"></option>
+              <option value="LightGrey"></option>
+              <option value="WhiteSmoke"></option>-->
+            </select>
+            <select class="ql-background">
+              <option selected></option>
+              <option value="red"></option>
+              <option value="orange"></option>
+              <option value="yellow"></option>
+              <option value="green"></option>
+              <option value="blue"></option>
+              <option value="purple"></option> 
+              
+              <!--<option value="gray"></option>             
+              <option value="AntiqueWhite"></option>
+              <option value="Aqua"></option>
+              <option value="BlueViolet"></option>
+              <option value="Chartreuse"></option>
+              <option value="DarkGray"></option>
+              <option value="LawnGreen"></option>
+              <option value="LightGrey"></option>
+              <option value="WhiteSmoke"></option>-->
+            </select>
+          </span>  
+          <span class="ql-formats"><!--控制大小-->
+            <select class="ql-size">
+              <option value="10px">小字体</option>
+              <option selected>中字体</option>
+              <option value="18px">大字体</option>
+              <option value="32px">超大字</option>
+            </select>
+          </span>
+        </div>
+         
+        <!-- 创建文本编辑器 -->
+        <div id="editor">
+          <p></p>
+        </div>    
+        
+        <script>
+            window.onload=function(){
+                var BackgroundClass = Quill.import('attributors/class/background');
+                var ColorClass = Quill.import('attributors/class/color');
+                var SizeStyle = Quill.import('attributors/style/size');
+                Quill.register(BackgroundClass, true);
+                Quill.register(ColorClass, true);
+                Quill.register(SizeStyle, true);
+                
+                //初始化
+                var editor = window.editor_quill = new Quill('#editor', {
+                  modules: { toolbar: '#toolbar' },
+                  placeholder: '请编辑内容（图片限制20M，视频200M）...',
+                  theme: 'snow'
+                });
+                /**
+                 * 下面内容参考
+                 * blog知乎：https://www.zhihu.com/question/63589376/answer/211207526
+                 */
+                //禁止调试
+                Quill.debug(false);
+                //自定义的事件
+                (editor?editor:window.editor_quill).on("text-change",function(delta,oldDelta,source){
+                	if('user' === source){
+                		//打印当前的内容
+                  		console.log((editor?editor:window.editor_quill).container.firstChild.innerHTML);
+                	}
+                });
+                //图片
+               var toolbar =  (editor?editor:window.editor_quill).getModule('toolbar');
+               toolbar.addHandler("image",function(e){
+               	   //console.log("自定义的事件-图片");
+               	   //10000000000000 = 1兆亿保证永远插在最后面
+               	   (editor?editor:window.editor_quill).insertEmbed(10000000000000,'image',"http://139.198.13.100:7010/resource/M00/00/43/wKgAA1oKik6ASojMAAAB9enLL80510.png");
+               });
+               //视频 http://www.w3school.com.cn/i/movie.ogg
+               toolbar.addHandler("video",function(e){
+               	   //10000000000000 = 1兆亿保证永远插在最后面
+               	   (editor?editor:window.editor_quill).insertEmbed(10000000000000,'video',"http://www.w3school.com.cn/i/movie.ogg");
+               });
+            }
+        </script>
+    </body>
+</html>
