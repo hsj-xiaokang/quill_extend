@@ -8651,6 +8651,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var range = _quill$selection$getR2[0];
 
 	        if (_this2.handlers[format] != null) {
+	        	console.log("vaule= "+value);//是不是有值
+	        	console.log(_this2);//toolbar
+	        	console.log(_this2.handlers[format]);
 	          _this2.handlers[format].call(_this2, value);
 	        } else if (_parchment2.default.query(format).prototype instanceof _parchment2.default.Embed) {
 	          value = prompt('Enter ' + format);
@@ -9397,7 +9400,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var top = reference.bottom + this.quill.root.scrollTop;
 	      this.root.style.left = left + 'px';
 	      this.root.style.top = top + 'px';
-	      var containerBounds = this.boundsContainer.getBoundingClientRect();
+	      console.log(this.boundsContainer);
+	      var containerBounds =  this.boundsContainer.getBoundingClientRect();
 	      var rootBounds = this.root.getBoundingClientRect();
 	      var shift = 0;
 	      if (rootBounds.right > containerBounds.right) {
@@ -10010,14 +10014,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    toolbar: {
 	      handlers: {
 	        link: function link(value) {
-	          if (value) {
+	          if (value) {	          	
 	            var range = this.quill.getSelection();
-	            if (range == null || range.length == 0) return;
-	            var preview = this.quill.getText(range);
+	            if (range == null || range.length == 0) return;	           
+	            var preview = this.quill.getText(range);	            
 	            if (/^\S+@\S+\.\S+$/.test(preview) && preview.indexOf('mailto:') !== 0) {
 	              preview = 'mailto:' + preview;
+	               console.log(preview);
 	            }
 	            var tooltip = this.quill.theme.tooltip;
+	            console.log(tooltip.edit);//SnowTooltip
 	            tooltip.edit('link', preview);
 	          } else {
 	            this.quill.format('link', false);
