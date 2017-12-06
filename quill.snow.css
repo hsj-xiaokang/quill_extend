@@ -280,6 +280,7 @@
 .ql-editor .ql-video.ql-align-right {
   margin: 0 0 0 auto;
 }
+/*添加前景色和背景色的颜色值*/
 .ql-editor .ql-bg-black {
   background-color: #000;
 }
@@ -301,6 +302,9 @@
 .ql-editor .ql-bg-purple {
   background-color: #93f;
 }
+.ql-editor .ql-bg-gray {
+  background-color: gray;
+}
 .ql-editor .ql-color-white {
   color: #fff;
 }
@@ -321,6 +325,9 @@
 }
 .ql-editor .ql-color-purple {
   color: #93f;
+}
+.ql-editor .ql-color-gray {
+  color: gray;
 }
 .ql-editor .ql-font-serif {
   font-family: Georgia, Times New Roman, serif;
